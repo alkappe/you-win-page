@@ -10,10 +10,11 @@
     </div>
     <style>
       html, body { font-family: 'Roboto Condensed', sans-serif; font-weight: 700; background: #000000}
-      .you-win { min-height: 20vh; display:flex; justify-content: center; align-items: center; color:#000000; }
-      h1 { text-shadow: 10px 10px 0 rgba(0,0,0,1); font-size: 230px; }
+      .you-win { display:flex; justify-content: center; align-items: center; color:#000000; }
+      h1 { text-shadow: 10px 10px 0 rgba(0,0,0,1); font-size: 230px; text-align: center; margin: 40% auto}
     </style>
     <script>
+      /* inspired by Wes Bos https://wesbos.com/courses/ */
       const youWin = document.querySelector('.you-win')
       const text = youWin.querySelector('h1')
       const walk = 500 //how is streched
@@ -31,8 +32,8 @@
           50
          -50
         */
-        const xWalk = Math.round((x / width * walk ) - (walk / 2))
-        const yWalk = Math.round((y / height * walk ) - (walk / 2))
+        const xWalk = Math.round((x / width * walk ) - (walk / 2)) || Math.round(e.beta);
+        const yWalk = Math.round((y / height * walk ) - (walk / 2)) || Math.round(e.gamma)
 
         text.style.textShadow = `
           ${xWalk}px ${yWalk}px 0 rgba(206, 2, 43,0.7),
@@ -42,32 +43,8 @@
       }
 
       youWin.addEventListener('mousemove', shadow)
+      window.addEventListener('deviceorientation', shadow);
 
-      function handleOrientation(e) {
-
-        const { offsetWidth: width, offsetHeight: height } = youWin;
-        let { offsetX: x, offsetY: y } = e;
-        if (this !== e.target) {
-          x = x + e.target.offsetLeft;
-          y = y + e.target.offsetTop;
-        }
-        /*
-         100
-          50
-         -50
-        */
-        const xWalk = Math.round(e.beta);
-        const yWalk = Math.round(e.gamma);
-
-        text.style.textShadow = `
-          ${xWalk}px ${yWalk}px 0 rgba(206, 2, 43,0.7),
-          ${yWalk}px ${xWalk * -1}px 0 rgba(3, 206, 20,0.7),
-          ${yWalk * -1}px ${xWalk}px 0 rgba(244, 238, 65,0.7)
-        `;
-
-        console.log(e)
-      }
-      window.addEventListener('deviceorientation', handleOrientation);
     </script>
   </body>
 </html>
